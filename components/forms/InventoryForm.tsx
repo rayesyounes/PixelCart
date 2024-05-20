@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import {
     CardContent,
     CardDescription,
@@ -18,6 +19,10 @@ import { UploadDropzone } from "@/lib/tsx/uploadthing";
 
 export default function InventoryForm() {
 
+    const [json, setJson] = useState<null | JSONContent>(null);
+    const [images, setImages] = useState<null | string[]>(null);
+    const [productFile, SetProductFile] = useState<null | string>(null);
+
 
     return (
         <form>
@@ -30,11 +35,15 @@ export default function InventoryForm() {
             <CardContent className="flex flex-col gap-y-10">
 
                 <div className="flex flex-col gap-y-2">
-                    <input type="hidden" name="images"/>
+                    <input type="hidden" name="images" value={JSON.stringify(images)} />
                     <Label>Product Images</Label>
                     <UploadDropzone
                         className="mt-4 ut-button:bg-primary ut-label:text-primary"
                         endpoint="imageUploader"
+                        onClientUploadComplete={(res) => {
+                            setImages(res.map((item) => item.url));
+                            console.log(res);
+                        }}
                     />
                 </div>
 
@@ -75,21 +84,26 @@ export default function InventoryForm() {
                     <input
                         type="hidden"
                         name="description"
+                        value={JSON.stringify(json)}
                     />
                     <Label>Description</Label>
-                    <TipTapEditor json={null} setJson={null} />
+                    <TipTapEditor json={json} setJson={setJson} />
                 </div>
                 <div className="flex flex-col gap-y-2">
-                    <input type="hidden" name="productFile"/>
+                    <input type="hidden" name="productFile" value={productFile ?? ""} />
                     <Label>Product File</Label>
                     <UploadDropzone
                         className="mt-4 ut-button:bg-primary ut-label:text-primary"
                         endpoint="productFileUpload"
+                        onClientUploadComplete={(res) => {
+                            SetProductFile(res[0].url);
+                            console.log(res);
+                        }}
                     />
                 </div>
             </CardContent>
             <CardFooter className="mt-5 flex justify-end">
-                <SubmitButton title="List your Product" />
+                <SubmitButton title="Create your Product" />
             </CardFooter>
         </form>
     );
