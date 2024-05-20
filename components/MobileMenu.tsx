@@ -6,10 +6,16 @@ import Link from "next/link";
 import {cn} from "@/lib/utils";
 import {links} from "@/lib/links";
 import {usePathname} from "next/navigation";
+import {useEffect} from "react";
 
 
 export function MobileMenu() {
     const location = usePathname();
+
+    useEffect(() => {
+        console.log(location);
+    }, [location]);
+
     return (
         <Sheet>
             <SheetTrigger asChild>
