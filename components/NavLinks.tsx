@@ -20,7 +20,7 @@ export default function NavLinks() {
                     key={link.id}
                     className={cn(location === link.href
                             ? "bg-muted" : "hover:bg-muted hover:bg-opacity-75",
-                        "group flex items-center px-2 py-2 font-medium rounded-md"
+                        "group flex items-center sm px-3 py-2 font-medium rounded-md"
                     )}
                 >
                     {link.name}
