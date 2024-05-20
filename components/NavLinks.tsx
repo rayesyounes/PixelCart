@@ -1,7 +1,7 @@
 "use client";
-import {cn} from "@/lib/utils";
+import {cn} from "@/lib/ts/utils";
 import Link from "next/link";
-import {links} from "@/lib/links";
+import {links} from "@/lib/ts/links";
 import {usePathname} from "next/navigation";
 import {useEffect} from "react";
 

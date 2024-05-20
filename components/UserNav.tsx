@@ -41,7 +41,7 @@ export default function UserNav({email, name, userImage}: iAppProps) {
                 <DropdownMenuSeparator/>
                 <DropdownMenuGroup>
                     <DropdownMenuItem asChild>
-                        <Link href="/sell">Sell your Product</Link>
+                        <Link href="/inventory">Sell Products</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                         <Link href="/products">My Products</Link>

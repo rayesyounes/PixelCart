@@ -3,8 +3,8 @@ import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import {Button} from "@/components/ui/button";
 import {Menu} from "lucide-react";
 import Link from "next/link";
-import {cn} from "@/lib/utils";
-import {links} from "@/lib/links";
+import {cn} from "@/lib/ts/utils";
+import {links} from "@/lib/ts/links";
 import {usePathname} from "next/navigation";
 import {useEffect} from "react";
 
