@@ -34,10 +34,11 @@ function splitSummaryIntoParagraphs(summary: string) {
 }
 
 
+
 export default async function ProductPage({ params, }: { params: { id: string }; }) {
     noStore();
     const data = await getProduct(params.id);
-    const formattedSummary = splitSummaryIntoParagraphs(data?.summary);
+    const formattedSummary = splitSummaryIntoParagraphs(data?.summary as string);
     return (
         <section className="mx-auto px-4  lg:mt-10 max-w-7xl lg:px-8 lg:grid lg:grid-rows-1 lg:grid-cols-7 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16">
             <Carousel className=" lg:row-end-1 lg:col-span-4">
@@ -46,7 +47,7 @@ export default async function ProductPage({ params, }: { params: { id: string };
                         <CarouselItem key={index}>
                             <div className="aspect-w-4 aspect-h-3 rounded-lg bg-gray-100 overflow-hidden">
                                 <Image
-                                    className={"object-cover w-full h-full rounded-lg"}                                    
+                                    className={"object-cover w-full h-full rounded-lg"}
                                     src={img as string}
                                     alt="Product image"
                                     width={500}
