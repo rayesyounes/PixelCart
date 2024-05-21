@@ -1,8 +1,9 @@
 "use server";
 import { z } from "zod";
 import db from "@/lib/ts/db";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { notFound } from "next/navigation";
 import { CategoryTypes } from "@prisma/client";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 
 export type State = {
@@ -116,4 +117,100 @@ export async function UpdateUserSettings(prevState: any, formData: FormData) {
     };
 
     return state;
+}
+
+export interface iAppProps {
+    category: "newest" | "templates" | "ui" | "icons";
+}
+
+export async function getCategories({ category }: iAppProps) {
+    switch (category) {
+        case "newest": {
+            const data = await db.product.findMany({
+                select: {
+                    id: true,
+                    name: true,
+                    price: true,
+                    images: true,
+                    summary: true,
+                },
+                orderBy: {
+                    createdAt: "desc",
+                },
+                take: 3,
+            });
+
+            return {
+                title: "Newest Products",
+                link: "/products/all",
+                data: data,
+            };
+        }
+        case "templates": {
+            const data = await db.product.findMany({
+                where: {
+                    category: "template",
+                },
+                select: {
+                    id: true,
+                    name: true,
+                    price: true,
+                    images: true,
+                    summary: true,
+                },
+                take: 3,
+            });
+
+            return {
+                title: "Templates",
+                link: "/products/template",
+                data: data,
+            };
+        }
+        case "ui": {
+            const data = await db.product.findMany({
+                where: {
+                    category: "ui",
+                },
+                select: {
+                    id: true,
+                    name: true,
+                    price: true,
+                    images: true,
+                    summary: true,
+                },
+                take: 3,
+            });
+
+            return {
+                title: "Ui Packs",
+                link: "/products/ui-pack",
+                data: data,
+            };
+        }
+        case "icons": {
+            const data = await db.product.findMany({
+                where: {
+                    category: "icon",
+                },
+                select: {
+                    id: true,
+                    name: true,
+                    price: true,
+                    images: true,
+                    summary: true,
+                },
+                take: 3,
+            });
+
+            return {
+                title: "Icons",
+                link: "/products/icon",
+                data: data,
+            };
+        }
+        default: {
+            return notFound();
+        }
+    }
 }
