@@ -2,12 +2,14 @@ import React from "react";
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import { Inter } from "next/font/google";
+import { Toaster } from "@/components/ui/sonner"
 
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "./api/uploadthing/core";
 
 import "./globals.css";
+import "@uploadthing/react/styles.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,6 +30,7 @@ export default function RootLayout({
         <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
         <Navbar />
         {children}
+        <Toaster position="top-center" expand={true} richColors theme="light"/>
       </body>
     </html>
   );

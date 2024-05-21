@@ -52,7 +52,6 @@
 }
 
 
-
 @layer base {
   * {
     @apply border-border;
@@ -60,5 +59,29 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+
+@layer components {
+
+  .ut-button {
+    @apply bg-primary/10;
+  }
+
+  .ut-button>*[data-ut-element="label"] {
+    @apply text-primary;
+  }
+
+  .ut-button>*[data-ut-element="button"][data-state="ready"] {
+    @apply bg-primary;
+  }
+
+  .ut-button>*[data-ut-element="button"][data-state="uploading"] {
+    @apply bg-secondary;
+  }
+
+  .ut-button>*[data-ut-element="button"][data-state="uploading"]::after {
+    @apply bg-primary;
   }
 }
