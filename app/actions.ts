@@ -214,3 +214,32 @@ export async function getCategories({ category }: iAppProps) {
         }
     }
 }
+
+export async function getProduct(id: string) {
+    const data = await db.product.findUnique({
+        where: {
+            id: id,
+        },
+        select: {
+            category: true,
+            description: true,
+            summary: true,
+            name: true,
+            images: true,
+            price: true,
+            createdAt: true,
+            id: true,
+            User: {
+                select: {
+                    profileImage: true,
+                    firstName: true,
+                },
+            },
+        },
+    });
+    return data;
+}
+
+export async function BuyProduct() {
+    return "Buying product";
+}
