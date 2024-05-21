@@ -1,5 +1,4 @@
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {Button} from "@/components/ui/button";
+import Link from "next/link";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -9,8 +8,10 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {LogoutLink} from "@kinde-oss/kinde-auth-nextjs/components";
-import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { ModeToggle } from "@/components/buttons/ModeToggle";
+import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface iAppProps {
     email: string;
@@ -18,13 +19,13 @@ interface iAppProps {
     userImage: string | undefined;
 }
 
-export default function UserNav({email, name, userImage}: iAppProps) {
+export default function UserNav({ email, name, userImage }: iAppProps) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-10 w-10 rounded-full">
                     <Avatar className="h-10 w-10">
-                        <AvatarImage src={userImage} alt="User Image"/>
+                        <AvatarImage src={userImage} alt="User Image" />
                         <AvatarFallback>{name.slice(0, 3)}</AvatarFallback>
                     </Avatar>
                 </Button>
@@ -38,7 +39,9 @@ export default function UserNav({email, name, userImage}: iAppProps) {
                         </p>
                     </div>
                 </DropdownMenuLabel>
-                <DropdownMenuSeparator/>
+                <DropdownMenuSeparator />
+                <ModeToggle />
+                <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                     <DropdownMenuItem asChild>
                         <Link href="/inventory">Sell Products</Link>
@@ -53,7 +56,7 @@ export default function UserNav({email, name, userImage}: iAppProps) {
                         <Link href="/billing">Billing</Link>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
-                <DropdownMenuSeparator/>
+                <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                     <LogoutLink>Log out</LogoutLink>
                 </DropdownMenuItem>

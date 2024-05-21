@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Navbar from "@/components/navs/Navbar";
 import { Inter } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner"
+import { ThemeProvider } from "next-themes";
 
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
@@ -23,14 +24,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return ( 
+  return (
     <html lang="en">
       <body className={inter.className}>
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
-        <Navbar />
-        {children}
-        <Toaster position="top-center" expand={true} richColors theme="light"/>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
+          <Navbar />
+          {children}
+          <Toaster position="top-center" expand={true} richColors theme="light" />
+        </ThemeProvider>
       </body>
     </html>
   );
