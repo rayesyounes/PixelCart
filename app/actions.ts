@@ -47,7 +47,7 @@ export async function CreateProduct(prevState: any, formData: FormData) {
         const state: State = {
             status: "error",
             errors: validateFields.error.flatten().fieldErrors,
-            message: "Please check the form and try again",
+            message: "Please check you filled in the form correctly and try again",
         };
 
         return state;
@@ -69,6 +69,50 @@ export async function CreateProduct(prevState: any, formData: FormData) {
     const state: State = {
         status: "success",
         message: "Product created successfully",
+    };
+
+    return state;
+}
+
+export async function UpdateUserSettings(prevState: any, formData: FormData) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        throw new Error("Something went wrong");
+    }
+
+    const validateFields = z.object({
+        firstName: z.string().min(3, { message: "First name must be at least 5 characters long" }),
+        lastName: z.string().min(3, { message: "Last name must be at least 5 characters long" }),
+    }).safeParse({
+        firstName: formData.get("firstName"),
+        lastName: formData.get("lastName"),
+    });
+
+    if (!validateFields.success) {
+        const state: State = {
+            status: "error",
+            errors: validateFields.error.flatten().fieldErrors,
+            message: "Please check you filled in the form correctly and try again",
+        };
+
+        return state;
+    }
+
+    await db.user.update({
+        where: {
+            id: user.id,
+        },
+        data: {
+            firstName: validateFields.data.firstName,
+            lastName: validateFields.data.lastName,
+        },
+    });
+
+    const state: State = {
+        status: "success",
+        message: "User settings updated successfully",
     };
 
     return state;
