@@ -215,6 +215,47 @@ export async function getCategories({ category }: iAppProps) {
     }
 }
 
+export async function getCategory(category: string) {
+    let input;
+
+    switch (category) {
+        case "template": {
+            input = "template";
+            break;
+        }
+        case "ui-pack": {
+            input = "ui";
+            break;
+        }
+        case "icon": {
+            input = "icon";
+            break;
+        }
+        case "all": {
+            input = undefined;
+            break;
+        }
+        default: {
+            return notFound();
+        }
+    }
+
+    const data = await db.product.findMany({
+        where: {
+            category: input as CategoryTypes,
+        },
+        select: {
+            id: true,
+            images: true,
+            summary: true,
+            name: true,
+            price: true,
+        },
+    });
+
+    return data;
+}
+
 export async function getProduct(id: string) {
     const data = await db.product.findUnique({
         where: {
