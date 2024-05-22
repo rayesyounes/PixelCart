@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import { getCategories, iAppProps } from "@/app/actions";
 import { Skeleton } from "@/components/ui/skeleton";
 import ProductCard from "@/components/home/ProductCard";
-import { LoadingProductCard } from "@/components/home/ProductCard";
+import { LoadingProduct } from "@/app/products/[category]/loading";
 
 
 export default function ProductShelf({ category }: iAppProps) {
@@ -53,9 +53,9 @@ function LoadingState() {
         <div>
             <Skeleton className="h-8 w-56" />
             <div className="grid grid-cols-1 sm:grid-cols-2 mt-4 gap-10 lg:grid-cols-3">
-                <LoadingProductCard />
-                <LoadingProductCard />
-                <LoadingProductCard />
+                <LoadingProduct />
+                <LoadingProduct />
+                <LoadingProduct />
             </div>
         </div>
     );
