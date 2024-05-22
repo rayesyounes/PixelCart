@@ -1,39 +1,65 @@
-# name: Vercel Preview Deployment
-# env:
-#   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-#   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-# on:
-#   push:
-#     branches:
-#       - dev
-# jobs:
-#   Deploy-Preview:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v2
+name: Vercel Preview Deployment
 
-#       - name: Set up Node.js
-#         uses: actions/setup-node@v2
-#         with:
-#           node-version: '20.11.1'
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-#       - name: Install Dependencies
-#         run: npm install
+on:
+  push:
+    branches:
+      - dev
 
-#       - name: Install Vercel CLI
-#         run: npm install --global vercel@latest
+jobs:
+  Deploy-Preview:
+    runs-on: ubuntu-latest
 
-#       - name: Pull Vercel Environment Information
-#         run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-#       - name: Install Prisma CLI
-#         run: npm install @prisma/client prisma
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.11.1'
 
-#       - name: Generate Prisma Client
-#         run: npx prisma generate
+      - name: Install Dependencies
+        run: npm install
 
-#       - name: Build Project Artifacts
-#         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
 
-#       - name: Deploy Project Artifacts to Vercel
-#         run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Create .env file
+        run: |
+          echo "NODE_ENV=development" >> .env
+          echo "DEV_BASE_URL=${{ secrets.DEV_BASE_URL }}" >> .env
+          echo "PROD_BASE_URL=${{ secrets.PROD_BASE_URL }}" >> .env
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+          echo "KINDE_CLIENT_ID=${{ secrets.KINDE_CLIENT_ID }}" >> .env
+          echo "KINDE_CLIENT_SECRET=${{ secrets.KINDE_CLIENT_SECRET }}" >> .env
+          echo "KINDE_ISSUER_URL=${{ secrets.KINDE_ISSUER_URL }}" >> .env
+          echo "KINDE_SITE_URL=${{ secrets.DEV_BASE_URL }}" >> .env
+          echo "KINDE_POST_LOGOUT_REDIRECT_URL=${{ secrets.DEV_BASE_URL }}" >> .env
+          echo "KINDE_POST_LOGIN_REDIRECT_URL=${{ secrets.DEV_BASE_URL }}/api/auth/kindeWebhook" >> .env
+          echo "UPLOADTHING_SECRET=${{ secrets.UPLOADTHING_SECRET }}" >> .env
+          echo "UPLOADTHING_APP_ID=${{ secrets.UPLOADTHING_APP_ID }}" >> .env
+
+      - name: Install Prisma CLI
+        run: npm install @prisma/client prisma
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Build Project Artifacts
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Deploy Project Artifacts to Vercel
+        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
