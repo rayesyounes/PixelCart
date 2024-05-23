@@ -1,6 +1,7 @@
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import SettingsForm from "@/components/forms/SettingsForm";
 import { unstable_noStore as noStore } from "next/cache";
+import { redirect } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import db from "@/lib/ts/db";
 
@@ -19,12 +20,13 @@ async function getData(userId: string) {
   return data;
 }
 
-export default async function SetttingsPage() {
+export default async function SettingsPage() {
   noStore();
   const { getUser } = getKindeServerSession();
   const user = await getUser();
   if (!user) {
-    throw new Error("Not Authorized");
+    return redirect("/");
+    // throw new Error("Not Authorized");
   }
 
   const data = await getData(user.id);

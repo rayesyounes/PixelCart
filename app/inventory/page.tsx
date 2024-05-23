@@ -13,7 +13,8 @@ export default async function InventoryRoute() {
   const user = await getUser();
   
   if (!user) {
-    throw new Error("Unauthorized");
+    return redirect("/");
+    // throw new Error("Unauthorized");
   }
 
   return (

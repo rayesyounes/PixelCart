@@ -9,7 +9,6 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { ModeToggle } from "@/components/buttons/ModeToggle";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -40,14 +39,12 @@ export default function UserNav({ email, name, userImage }: iAppProps) {
                     </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <ModeToggle />
-                <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                     <DropdownMenuItem asChild>
                         <Link href="/inventory">Sell Products</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                        <Link href="/products">My Products</Link>
+                        <Link href="/swags">My Swags</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                         <Link href="/settings">Settings</Link>
