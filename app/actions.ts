@@ -1,7 +1,9 @@
 "use server";
 import { z } from "zod";
 import db from "@/lib/ts/db";
+import { stripe } from "@/lib/ts/stripe";
 import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 import { CategoryTypes } from "@prisma/client";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
@@ -281,6 +283,66 @@ export async function getProduct(id: string) {
     return data;
 }
 
-export async function BuyProduct() {
-    return "Buying product";
+export async function BuyProduct(formData: FormData) {
+
+    const id = formData.get("id") as string;
+    const product = await db.product.findUnique({
+        where: {
+            id: id,
+        },
+        select: {
+            name: true,
+            summary: true,
+            price: true,
+            images: true,
+            productFile: true,
+            User: {
+                select: {
+                    connectedAccountId: true,
+                },
+            },
+        },
+    });
+
+    const session = await stripe.checkout.sessions.create({
+        mode: "payment",
+        line_items: [
+            {
+                price_data: {
+                    currency: "usd",
+                    unit_amount: Math.round((product?.price as number) * 100),
+                    product_data: {
+                        name: product?.name as string,
+                        description: product?.summary,
+                        images: product?.images,
+                    },
+                },
+                quantity: 1,
+            },
+        ],
+        // metadata: {
+        //     link: product?.productFile as string,
+        // },
+
+        // payment_intent_data: {
+        //     application_fee_amount: Math.round((product?.price as number) * 100) * 0.1,
+        //     transfer_data: {
+        //         destination: product?.User?.connectedAccountId as string,
+        //     },
+        // },
+
+        success_url:
+            process.env.NODE_ENV === "development"
+                ? process.env.DEV_BASE_URL + "/payment/success"
+                : process.env.PROD_BASE_URL + "/payment/success",
+        cancel_url:
+            process.env.NODE_ENV === "development"
+                ? process.env.DEV_BASE_URL + "/payment/cancel"
+                : process.env.PROD_BASE_URL + "/payment/cancel",
+    });
+
+    
+    return redirect(session.url as string);
+    
+
 }
