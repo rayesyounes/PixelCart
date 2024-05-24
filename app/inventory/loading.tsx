@@ -1,5 +1,6 @@
 import { Card, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import React from "react";
 
 export default function InventoryLoading() {
   return (

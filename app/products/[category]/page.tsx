@@ -1,3 +1,4 @@
+import React from "react";
 import { getCategory } from "@/app/actions";
 import ProductCard from "@/components/home/ProductCard";
 import { unstable_noStore as noStore } from "next/cache";

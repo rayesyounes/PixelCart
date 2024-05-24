@@ -1,4 +1,5 @@
 import LoadingProduct from "@/app/products/[category]/loading";
+import React from "react";
 
 export default function LoadingSwags() {
     return (

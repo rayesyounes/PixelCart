@@ -1,4 +1,5 @@
 import ProductShelf from "@/components/home/ProductShelf";
+import React from "react";
 
 export default function Home() {
   return (

@@ -3,6 +3,7 @@ import SettingsForm from "@/components/forms/SettingsForm";
 import { unstable_noStore as noStore } from "next/cache";
 import { redirect } from "next/navigation";
 import { Card } from "@/components/ui/card";
+import React from "react";
 import db from "@/lib/ts/db";
 
 async function getData(userId: string) {

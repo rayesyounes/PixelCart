@@ -1,3 +1,4 @@
+import React from "react";
 import {
     Carousel,
     CarouselContent,
@@ -12,33 +13,9 @@ import { unstable_noStore as noStore } from "next/cache";
 import ProductDescription from "@/components/home/ProductDescription";
 import Image from "next/image";
 
-
-function splitSummaryIntoParagraphs(summary: string) {
-    if (!summary) return '';
-
-    const sentences = summary.match(/[^.!?]+[.!?]+/g) || [summary];
-    let paragraphs = [];
-    let currentParagraph = '';
-
-    for (let i = 0; i < sentences.length; i++) {
-        currentParagraph += sentences[i];
-
-        // Add a line break after every 5 sentences
-        if ((i + 1) % 5 === 0 || i === sentences.length - 1) {
-            paragraphs.push(currentParagraph.trim());
-            currentParagraph = '';
-        }
-    }
-
-    return paragraphs.join('\n');
-}
-
-
-
 export default async function ProductPage({ params, }: { params: { id: string }; }) {
     noStore();
     const data = await getProduct(params.id);
-    const formattedSummary = splitSummaryIntoParagraphs(data?.summary as string);
     return (
         <section className="mx-auto px-4  lg:mt-10 max-w-7xl lg:px-8 lg:grid lg:grid-rows-1 lg:grid-cols-7 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16">
             <Carousel className=" lg:row-end-1 lg:col-span-4">

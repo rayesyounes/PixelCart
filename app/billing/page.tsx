@@ -1,8 +1,28 @@
 import db from "@/lib/ts/db";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { unstable_noStore as noStore } from "next/cache";
+import Submitbutton from "@/components/buttons/SubmitButton";
+import { CreateStripeAccoutnLink, GetStripeDashboardLink } from "@/app/actions";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
+async function getData(userId: string) {
+  const data = await db.user.findUnique({
+    where: {
+      id: userId,
+    },
+    select: {
+      stripeConnectedLinked: true,
+    },
+  });
 
+  return data;
+}
 
 export default async function BillingRoute() {
   noStore();
@@ -13,9 +33,30 @@ export default async function BillingRoute() {
     throw new Error("Unauthorized");
   }
 
+  const data = await getData(user.id);
   return (
     <section className="max-w-7xl mx-auto px-4 md:px-8">
-      billing
+      <Card>
+        <CardHeader>
+          <CardTitle>Billing</CardTitle>
+          <CardDescription>
+            Find all your details regarding your payments
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {data?.stripeConnectedLinked === false && (
+            <form action={CreateStripeAccoutnLink}>
+              <Submitbutton title="Link your Accout to stripe" />
+            </form>
+          )}
+
+          {data?.stripeConnectedLinked === true && (
+            <form action={GetStripeDashboardLink}>
+              <Submitbutton title="View Dashboard" />
+            </form>
+          )}
+        </CardContent>
+      </Card>
     </section>
   );
 }

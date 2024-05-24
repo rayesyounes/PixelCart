@@ -1,3 +1,4 @@
+import React from "react";
 import db from "@/lib/ts/db";
 import { redirect } from "next/navigation";
 import ProductCard from "@/components/home/ProductCard";

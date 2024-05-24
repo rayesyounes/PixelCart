@@ -1,6 +1,6 @@
-import db from "@/lib/ts/db";
 import { redirect } from "next/navigation";
 import { Card } from "@/components/ui/card";
+import React from "react";
 import InventoryForm from "@/components/forms/InventoryForm";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { unstable_noStore as noStore } from "next/cache";

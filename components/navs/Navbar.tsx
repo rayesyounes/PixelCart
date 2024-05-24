@@ -13,7 +13,7 @@ export default async function NavBar() {
     return (
         <nav className="relative max-w-7xl w-full flex items-center px-4 md:px-8 mx-auto py-7 justify-between">
             <div className="md:col-span-3">
-                <Link href="/public">
+                <Link href="/">
                     <h1 className="text-2xl font-semibold ">
                         Pixel<span className="text-primary">Cart</span>
                     </h1>
