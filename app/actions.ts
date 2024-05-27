@@ -4,8 +4,8 @@ import db from "@/lib/ts/db";
 import { stripe } from "@/lib/ts/stripe";
 import { notFound } from "next/navigation";
 import { redirect } from "next/navigation";
-import { CategoryTypes } from "@prisma/client";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { CategoryTypes } from "@prisma/client";
 
 const productSchema = z.object({
     name: z.string().min(3, { message: "Name must be at least 3 characters long" }),
@@ -30,8 +30,10 @@ export async function CreateProduct(prevState: any, formData: FormData) {
     const user = await getUser();
 
     if (!user) {
-        throw new Error("Something went wrong");
+        throw new Error("User session not found");
     }
+
+    console.log("User ID:", user.id);
 
     const validateFields = productSchema.safeParse({
         name: formData.get("name"),
@@ -51,6 +53,11 @@ export async function CreateProduct(prevState: any, formData: FormData) {
         };
 
         return state;
+    }
+
+    const existingUser = await db.user.findUnique({ where: { id: user.id } });
+    if (!existingUser) {
+        throw new Error("Referenced user does not exist in the database");
     }
 
     await db.product.create({

@@ -35,7 +35,7 @@ export default async function InventoryRoute() {
     return redirect("/");
   }
 
-  const data = await CheckStripeLink(user.id);
+  await CheckStripeLink(user.id);
 
   return (
     <section className="max-w-7xl mx-auto px-4 md:px-8 mb-14">

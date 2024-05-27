@@ -29,7 +29,9 @@ export async function POST(req: Request) {
                 },
                 data: {
                     stripeConnectedLinked:
-                        !(account.capabilities?.transfers === "pending" || account.capabilities?.transfers === "inactive"),
+                        account.capabilities?.transfers === "pending" || account.capabilities?.transfers === "inactive"
+                            ? false
+                            : true,
                 },
             });
             break;
