@@ -37,6 +37,7 @@ jobs:
           echo UPLOADTHING_APP_ID=${{ secrets.UPLOADTHING_APP_ID }} >> .env
           echo STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }} >> .env
           echo STRIPE_CONNECT_WEBHOOK_SECRET=${{ secrets.STRIPE_CONNECT_WEBHOOK_SECRET }} >> .env
+          echo RESEND_API_KEY=${{ secrets.RESEND_API_KEY }} >> .env
 
       - name: Install dependencies
         run: npm install
