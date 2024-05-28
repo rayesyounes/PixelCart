@@ -1,0 +1,54 @@
+name: Vercel Deployment
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  Deploy-Production:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.11.1'
+
+      - name: Create .env file
+        run: |
+          echo NODE_ENV=production >> .env
+          echo PROD_BASE_URL=https://pixelcart.vercel.app >> .env
+          echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env
+          echo KINDE_CLIENT_ID=${{ secrets.KINDE_CLIENT_ID }} >> .env
+          echo KINDE_CLIENT_SECRET=${{ secrets.KINDE_CLIENT_SECRET }} >> .env
+          echo KINDE_ISSUER_URL=${{ secrets.KINDE_ISSUER_URL }} >> .env
+          echo KINDE_SITE_URL=https://pixelcart.vercel.app >> .env
+          echo KINDE_POST_LOGOUT_REDIRECT_URL=https://pixelcart.vercel.app >> .env
+          echo KINDE_POST_LOGIN_REDIRECT_URL=https://pixelcart.vercel.app/api/auth/kindeWebhook >> .env
+          echo UPLOADTHING_SECRET=${{ secrets.UPLOADTHING_SECRET }} >> .env
+          echo UPLOADTHING_APP_ID=${{ secrets.UPLOADTHING_APP_ID }} >> .env
+          echo STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }} >> .env
+          echo STRIPE_CONNECT_WEBHOOK_SECRET=${{ secrets.STRIPE_CONNECT_WEBHOOK_SECRET }} >> .env
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build Project Artifacts
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy Project Artifacts to Vercel
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
